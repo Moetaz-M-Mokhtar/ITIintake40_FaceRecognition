@@ -1,0 +1,52 @@
+{
+  "inputs": [
+    {
+      "data_name": "data",
+      "data_shape": [0, 3, 640, 640]
+    }
+  ],
+  "input_type": "image/jpeg",
+  "outputs": [
+    {
+      "data_name": "face_rpn_cls_prob_reshape_stride32_output",
+      "data_shape": [0, 4, 20, 20]
+    },
+    {
+      "data_name": "face_rpn_bbox_pred_stride32_output",
+      "data_shape": [0, 8, 20, 20]
+    },
+    {
+      "data_name": "face_rpn_landmark_pred_stride32_output",
+      "data_shape": [0, 20, 20, 20]
+    },
+    {
+      "data_name": "face_rpn_cls_prob_reshape_stride16_output",
+      "data_shape": [0, 4, 40, 40]
+    },
+    {
+      "data_name": "face_rpn_bbox_pred_stride16_output",
+      "data_shape": [0, 8, 40, 40]
+    },
+    {
+      "data_name": "face_rpn_landmark_pred_stride16_output",
+      "data_shape": [0, 20, 40, 40]
+    },
+    {
+      "data_name": "face_rpn_cls_prob_reshape_stride8_output",
+      "data_shape": [0, 4, 80, 80]
+    },
+    {
+      "data_name": "face_rpn_bbox_pred_stride8_output",
+      "data_shape": [0, 4, 80, 80]
+    },
+    {
+      "data_name": "face_rpn_bbox_pred_stride8_output",
+      "data_shape": [0, 8, 80, 80]
+    },
+    {
+      "data_name": "face_rpn_landmark_pred_stride8_output",
+      "data_shape": [0, 20, 80, 80]
+    }
+  ],
+  "output_type": "application/json"
+}

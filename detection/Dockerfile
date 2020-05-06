@@ -1,0 +1,35 @@
+FROM ubuntu
+# FROM nvidia/cuda:10.2-cudnn7-devel
+
+#application port
+EXPOSE 8443
+
+#Download pacjages
+RUN apt update -- && apt install -y \
+    python \
+    git \
+    python3-pip \
+    python3-setuptools \
+    libsm6 \
+    libxext6 \
+    libxrender1 \
+    openjdk-8-jre-headless
+
+# Disable Running performance tests to find the best convolution algorithm for face detection
+ENV MXNET_CUDNN_AUTOTUNE_DEFAULT 0
+
+# Install pip requirements
+ADD requirements.txt .
+RUN pip3 install -r requirements.txt
+
+COPY . /root/
+
+WORKDIR /root/
+
+RUN cd insightface/RetinaFace/rcnn/cython ;  python3 setup.py build_ext --inplace 
+RUN model-archiver --model-name r50 --model-path /root/models/detection/retinaface-R50/ --handler /root/models/detection/retinaface-R50/model_handler.py
+# multi-model-server --start --models r50=r50.mar --model-store /root --mms-config /root/mms.config
+ENTRYPOINT multi-model-server --start --models r50=r50.mar --model-store /root --mms-config /root/mms.config && /bin/bash
+
+           
+
