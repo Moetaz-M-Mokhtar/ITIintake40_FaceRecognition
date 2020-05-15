@@ -1,0 +1,10 @@
+Flask==1.1.1
+tensorflow-gpu==1.15.0
+scipy
+numpy
+scikit-learn
+opencv-python
+matplotlib
+Pillow
+requests
+flask-RESTful

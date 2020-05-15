@@ -1,8 +1,13 @@
-FROM ubuntu
-# FROM nvidia/cuda:10.2-cudnn7-devel
+FROM FROM nvidia/cuda:10.2-cudnn7-devel
 
 #application port
 EXPOSE 8443
+
+
+# set noninteractive mode to fix errors related to apt-get
+RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+
+RUN echo "Africa/Cairo" > /etc/timezone
 
 #Download pacjages
 RUN apt update -- && apt install -y \
