@@ -1,4 +1,4 @@
-FROM FROM nvidia/cuda:10.2-cudnn7-devel
+FROM nvidia/cuda:10.2-cudnn7-devel
 
 #application port
 EXPOSE 8443
