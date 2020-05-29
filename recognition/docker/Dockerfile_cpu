@@ -2,7 +2,7 @@ FROM ubuntu
 # FROM nvidia/cuda:10.2-cudnn7-devel
 
 #application port
-EXPOSE 5000
+EXPOSE 5002
 
 # set noninteractive mode to fix errors related to apt-get
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
