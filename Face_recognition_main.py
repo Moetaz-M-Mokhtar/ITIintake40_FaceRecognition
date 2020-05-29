@@ -38,8 +38,8 @@ import cv2
 import random
 from collections import Counter
 
-from facenet.src import facenet
-from insightface.RetinaFace.retinaface import RetinaFace
+from recognition.facenet.src import facenet
+from detection.insightface.RetinaFace.retinaface import RetinaFace
 
 
 def recognition_handler(args):
@@ -79,12 +79,10 @@ def recognition_handler(args):
                     detect_align(frame, detector)
 
                 else:
-                    print("Video ended")
                     break
-                print(frame.shape)
                 frame = cv2.rotate(frame,cv2.ROTATE_90_CLOCKWISE)
                 
-                faces_bounding_boxes, _ = detect_align(frame, detector)
+                faces_bounding_boxes, landmarks = detect_align(frame, detector)
                 nrof_faces = faces_bounding_boxes.shape[0]
                 faces = np.zeros((nrof_faces, args.image_size, args.image_size, 3))
                 if nrof_faces > 0:
@@ -111,13 +109,36 @@ def recognition_handler(args):
                     faces[i] = facenet.prewhiten(faces[i])
                     faces[i] = facenet.crop(faces[i], False, args.image_size)
                     faces[i] = facenet.flip(faces[i], False)
-                    cv2.imshow('screen', faces[i])
                     face = faces[i][None,:,:,:]
                     feed_dict = { images_placeholder:face, phase_train_placeholder:False }
                     face_embeddings = sess.run(embeddings, feed_dict=feed_dict)
                     recognized_labels.append((KNN_predict(face_embeddings, emb_array, labels, k=3), faces_bounding_boxes[i]))
             
                 print('recognized labels: ',recognized_labels)
+                for i in range(nrof_faces):
+                    box = faces_bounding_boxes[i].astype(np.int)
+                    color = (0, 0, 255)
+                    cv2.rectangle(frame, (box[0], box[1]), (box[2], box[3]), color, 2)
+                    if landmarks is not None:
+                        landmark5 = landmarks[i].astype(np.int)
+                    for l in range(landmark5.shape[0]):
+                        color = (0, 0, 255)
+                        if l == 0 or l == 3:
+                            color = (0, 255, 0)
+                        cv2.circle(frame, (landmark5[l][0], landmark5[l][1]), 1, color, 2)
+                    font = cv2.FONT_HERSHEY_SIMPLEX
+                    bottomLeftCornerOfText = (box[2]-80, box[3]+15)
+                    fontScale = 0.4
+                    fontColor = (0, 255, 255)
+                    lineType = 2
+
+                    cv2.putText(frame, recognized_labels[i],
+                                bottomLeftCornerOfText,
+                                font,
+                                fontScale,
+                                fontColor,
+                                lineType)
+            # cv2.imshow('output', img)
                 
         
                 
@@ -127,7 +148,6 @@ def KNN_predict(image_embeddings, data_embeddings, labels, k):
     for i in range(len(data_embeddings)):
         distances.append((facenet.distance(image_embeddings, data_embeddings[i], distance_metric = 0),labels[i]))
     distances = sorted(distances, key=lambda tup: tup[0])
-    print('predictions: ', distances[:min(k, len(data_embeddings))])
     max_iters = (Counter(elem[1] for elem in distances[:min(k, len(data_embeddings))]))
     result = ''
     curr_freq = 0
