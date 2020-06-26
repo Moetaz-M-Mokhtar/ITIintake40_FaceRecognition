@@ -1,7 +1,7 @@
-FROM tensorflow/tensorflow:1.15-gpu
+FROM tensorflow/tensorflow:1.15.2-gpu
 
 #application port
-EXPOSE 5000
+EXPOSE 5002
 
 # set noninteractive mode to fix errors related to apt-get
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections

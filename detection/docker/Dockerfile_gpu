@@ -1,4 +1,4 @@
-FROM FROM nvidia/cuda:10.2-cudnn7-devel
+FROM nvidia/cuda:10.2-cudnn7-devel
 
 #application port
 EXPOSE 8443
@@ -33,8 +33,9 @@ WORKDIR /root/
 
 RUN cd insightface/RetinaFace/rcnn/cython ;  python3 setup.py build_ext --inplace 
 RUN model-archiver --model-name r50 --model-path /root/models/detection/retinaface-R50/ --handler /root/models/detection/retinaface-R50/model_handler.py
-# multi-model-server --start --models r50=r50.mar --model-store /root --mms-config /root/mms.config
-ENTRYPOINT multi-model-server --start --models r50=r50.mar --model-store /root --mms-config /root/mms.config && /bin/bash
+
+ENTRYPOINT ["/root/docker-entry_point.sh"]
+CMD ["serve"]
 
            
 
