@@ -33,7 +33,7 @@ WORKDIR /root/
 RUN cd insightface/RetinaFace/rcnn/cython ;  python3 setup.py build_ext --inplace 
 RUN model-archiver --model-name r50 --model-path /root/models/detection/retinaface-R50/ --handler /root/models/detection/retinaface-R50/model_handler.py
 
-ENTRYPOINT ["/root/docker-entry_point.sh"]
+ENTRYPOINT ["/root/docker_entry_point.sh"]
 CMD ["serve"]
 
            
