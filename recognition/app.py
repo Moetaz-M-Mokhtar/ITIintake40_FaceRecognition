@@ -113,9 +113,13 @@ with tf.Graph().as_default():
             landmarks = response.content.decode("utf-8").replace(r'[', '').replace(r' ', '').replace('\n','').split(']],')
             landmarks = [landmark.split('],') for landmark in landmarks]
             landmarks = [[s.replace(']','').split(',') for s in landmark] for landmark in landmarks]
-            landmarks = [[[float(pos) for pos in landmark_pos] for landmark_pos in landmark] for landmark in landmarks]
-            faces_bb = np.array(landmarks[0])
-            landmarks = np.array(landmarks[1:])
+            if landmarks[0]:
+            	landmarks = [[[float(pos) for pos in landmark_pos] for landmark_pos in landmark] for landmark in landmarks]
+            	faces_bb = np.array(landmarks[0])
+            	landmarks = np.array(landmarks[1:])
+            else:
+            	faces_bb = []
+            	landmarks = []
             return faces_bb, landmarks
         
         def align_faces(frame, faces_loc):
