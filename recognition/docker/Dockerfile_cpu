@@ -1,5 +1,4 @@
-FROM ubuntu
-# FROM nvidia/cuda:10.2-cudnn7-devel
+FROM python:3.7
 
 #application port
 EXPOSE 5002
