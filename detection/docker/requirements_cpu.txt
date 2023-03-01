@@ -1,5 +1,5 @@
 Flask==1.1.1
-mxnet==1.5
+mxnet==1.9.1
 multi-model-server==1.1.1b20200505
 model-archiver==1.0.3
 numpy
