@@ -1,4 +1,4 @@
-Flask==1.1.1
+Flask==2.3.2
 mxnet-cu100==1.5.0
 multi-model-server==1.1.1b20200505
 model-archiver==1.0.3
